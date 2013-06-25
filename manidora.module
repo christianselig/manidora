@@ -136,6 +136,15 @@ function manidora_menu() {
     'load arguments' => array(2),
   );
 
+  $items['test'] = array(
+    'title' => 'Manidora',
+    'description' => 'Configure the UofM customization module.',
+    'page callback' => 'drupal_get_form',
+    'access arguments' => array('administer site configuration'),
+    'page arguments' => array('manidora_creative_commons_form'),
+    'file' => 'includes/creative_commons.inc',
+  );
+
   return $items;
 }
 
@@ -855,6 +864,10 @@ function manidora_form_alter(&$form, &$form_state, $form_id) {
     $form += array_slice($original_form, -2);
 
     array_unshift($form['next']['#submit'], 'manidora_ocr_flag_submit');
+  }
+  elseif ($form_id == 'xml_form_builder_ingest_form') {
+    module_load_include('inc', 'manidora', 'includes/creative_commons');
+    manidora_creative_commons_form($form, $form_state);
   }
 }
 
